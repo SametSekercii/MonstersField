@@ -9,6 +9,7 @@ public class GameManager : UnitySingleton<GameManager>
     private void Awake()
     {
         Application.targetFrameRate = 60;
+        Debug.Log("sa");
 
     }
 
