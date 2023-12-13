@@ -2,17 +2,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : UnitySingleton<GameManager>
 {
-    // Start is called before the first frame update
-    void Start()
+    public GameData gameData;
+
+    private void Awake()
     {
-        
+        Application.targetFrameRate = 60;
+
     }
 
-    // Update is called once per frame
+    void Start()
+    {
+
+        InvokeRepeating("SaveData", 0.05f, 0.05f);
+        EventManager.Broadcast(GameEvent.OnStart);
+
+    }
+
+
     void Update()
+    {
+
+    }
+    void SaveData()
+    {
+        SaveManager.SaveData(gameData);
+    }
+
+    private void OnEnable()
+    {
+       
+    }
+    private void OnDisable()
     {
         
     }
+    
 }
