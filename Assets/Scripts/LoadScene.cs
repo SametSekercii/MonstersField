@@ -13,7 +13,7 @@ public class LoadScene : MonoBehaviour
 #if !UNITY_EDITOR
         SaveManager.LoadData(data);
 #endif
-        SaveManager.LoadData(data);
+        
         SceneLoad();
     }
 

@@ -17,7 +17,9 @@ public class UIManager : UnitySingleton<UIManager>
 
     [SerializeField] private GameObject failPanel;
     [SerializeField] private GameObject joystick;
-    
+    [SerializeField] private TMP_Text playerCoinText;
+    [SerializeField] private TMP_Text playerKillText;
+
 
     //[Space(15)]
     //[Header("Arrays")]
@@ -25,12 +27,13 @@ public class UIManager : UnitySingleton<UIManager>
 
     //[Space(15)]
     //[Header("Float&Int")]
-   
+
 
     private void Awake()
     {
         gameManager = FindObjectOfType<GameManager>();
         gameData = gameManager.gameData;
+        SetGameInfoUI();
 
     }
 
@@ -39,12 +42,14 @@ public class UIManager : UnitySingleton<UIManager>
        
         EventManager.AddHandler(GameEvent.OnFail, OnFail);
         EventManager.AddHandler(GameEvent.OnStart, OnStart);
+        EventManager.AddHandler(GameEvent.OnCollectCoin, OnCollectCoin);
     }
     private void OnDisable()
     {
         
         EventManager.RemoveHandler(GameEvent.OnFail, OnFail);
         EventManager.RemoveHandler(GameEvent.OnStart, OnStart);
+        EventManager.RemoveHandler(GameEvent.OnCollectCoin, OnCollectCoin);
     }
    
     private void OnFail()
@@ -61,13 +66,27 @@ public class UIManager : UnitySingleton<UIManager>
     private void OpenPanel(GameObject panel, string sound)
     {
         panel.gameObject.SetActive(true);
-        EventManager.Broadcast(GameEvent.OnPlaySound, sound);
+        //EventManager.Broadcast(GameEvent.OnPlaySound, sound);
     }
    
     public void Restart()
     {
-        EventManager.Broadcast(GameEvent.OnPlaySound, "SoundClick");
+        //EventManager.Broadcast(GameEvent.OnPlaySound, "SoundClick");
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    void OnCollectCoin()
+    {
+        Debug.Log("OnCollectCoin"+gameData.playerCoin);
+        playerCoinText.text=gameData.playerCoin.ToString();
+
+    }
+
+    void SetGameInfoUI()
+    {
+        playerCoinText.text = GameManager.Instance.gameData.playerCoin.ToString();
+        playerKillText.text = GameManager.Instance.gameData.playerKill.ToString();
+
     }
    
     

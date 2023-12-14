@@ -1166,7 +1166,7 @@ GameObject:
   - component: {fileID: 5433400874464822030}
   m_Layer: 7
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1260,6 +1260,7 @@ MonoBehaviour:
   health: 50
   state: 0
   moveSpeed: 5
+  healthBar: {fileID: 2079911859}
 --- !u!114 &5433400874464822028
 MonoBehaviour:
   m_ObjectHideFlags: 0

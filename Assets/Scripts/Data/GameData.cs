@@ -7,7 +7,7 @@ using UnityEngine;
 public class GameData : ScriptableObject
 {
     [Header("Float & Int")]
-    public int gameLevel = 1;
+    public int playerKill = 0;
     public int playerCoin=0;
 
 

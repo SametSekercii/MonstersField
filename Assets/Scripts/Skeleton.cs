@@ -70,6 +70,8 @@ public class Skeleton : Enemy
         
         var bullet = Instantiate(weapon.prefab, rightHand[0].position, Quaternion.Euler(0, 0, 0), transform);
 
+        bullet.GetComponent<Weapons>().Move(transform, bullet.GetComponent<Weapons>().stats.speed);
+
         Debug.Log("throwed");
 
     }
