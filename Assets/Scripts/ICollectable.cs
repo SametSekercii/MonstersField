@@ -1,0 +1,7 @@
+
+ interface ICollectable 
+{
+
+    void OnCollect();
+   
+}

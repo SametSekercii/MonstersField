@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
+using UnityEngine.UI;
+using Unity.VisualScripting;
 
 
 public class PlayerController : Characters
@@ -9,6 +11,7 @@ public class PlayerController : Characters
     public enum PlayerState { isMoving, isAttacking, isWaiting, isDead }
     public PlayerState state;
     public float moveSpeed;
+    public Image healthBar;
     PlayerMovement _playerMovement;
     PlayerAnimationController PlayerAnimationController;
     PlayerInput _playerInput;
@@ -28,6 +31,8 @@ public class PlayerController : Characters
 
     void Start()
     {
+        maxHealth = health;
+        healthBar.fillAmount = health / maxHealth;
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         _playerInput = GetComponent<PlayerInput>();
@@ -46,6 +51,7 @@ public class PlayerController : Characters
         {
             _playerMovement.Movement(_playerInput.moveVector);
         }
+        else state = PlayerState.isDead;
 
 
     }
@@ -72,12 +78,50 @@ public class PlayerController : Characters
     {
         if (isAlive) 
         {
-            Health -= damage;
-        
+           
+            StartCoroutine(TakeDamageSlowly(damage));
+            
+
         }
-        if (Health <= 0) isAlive = false;
-        EventManager.Broadcast(GameEvent.OnTakeDamage);
         
+        
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        ICollectable collectable = other.transform.GetComponent<Collectables>();
+
+        if (collectable != null)
+        {
+            collectable.OnCollect();
+
+        }
+
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        
+
+    }
+
+    IEnumerator TakeDamageSlowly(float damage)
+    {
+
+        for (int i = 0; i < 10; i++)
+        {
+            health -= damage / 10;
+            healthBar.fillAmount = health / maxHealth;
+            yield return new WaitForSeconds(0.03f);
+
+        }
+        if (Health <= 0)
+        {
+            isAlive = false;
+            EventManager.Broadcast(GameEvent.OnFail);
+
+        } 
+       
+        EventManager.Broadcast(GameEvent.OnTakeDamage);
     }
 
     private void OnTakeDamage()

@@ -9,9 +9,13 @@ public class Skeleton : Enemy
 
     public SkeletonEnemyState state;
     SkeletonAnimationController animationController;
+    public Transform[] rightHand;
+    public Weapon weapon;
     public AttackRange attackRange { get; set; }
     private void Start()
     {
+        rightHand= FindChildrenWithTag(transform, "Hand");
+        weapon=GetComponent<Weapon>();
         attackRange =GetComponent<AttackRange>();
         target=FindObjectOfType<PlayerController>().transform;
         agent = GetComponent<NavMeshAgent>();
@@ -27,7 +31,7 @@ public class Skeleton : Enemy
         animationController.SetAnimations(state);
 
 
-
+        
 
     }
     public List<Transform> GetTargetsInRange() => attackRange.targetsInRange;
@@ -51,21 +55,23 @@ public class Skeleton : Enemy
         switch (state)
         {
             case SkeletonEnemyState.isChasing:
-                Debug.Log("Skeleton is chasing");
+                //Debug.Log("Skeleton is chasing");
                 Chase();
               
                 break;
             case SkeletonEnemyState.isAttacking:
-                Debug.Log("Skeleton is attacking");
+                //Debug.Log("Skeleton is attacking");
                 break;
         }
     }
 
     public void ThrowProjectile()
     {
-        Debug.Log("throwed");
         
-       
+        var bullet = Instantiate(weapon.prefab, rightHand[0].position, Quaternion.Euler(0, 0, 0), transform);
+
+        Debug.Log("throwed");
+
     }
 
     public void CheckIfStillInRange()
@@ -76,8 +82,34 @@ public class Skeleton : Enemy
         }
     }
 
+    public Transform[] FindChildrenWithTag(Transform parent, string tag)
+    {
+       
+        List<Transform> childrenWithTag = new List<Transform>();
+
+      
+        foreach (Transform child in parent)
+        {
+            
+            if (child.CompareTag(tag))
+            {
+                childrenWithTag.Add(child);
+            }
+
+           
+            if (child.childCount > 0)
+            {
+                childrenWithTag.AddRange(FindChildrenWithTag(child, tag));
+            }
+        }
+
+        
+        return childrenWithTag.ToArray();
+    }
+}
+
 
    
 
 
-}
+

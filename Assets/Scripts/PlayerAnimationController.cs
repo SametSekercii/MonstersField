@@ -28,6 +28,7 @@ public class PlayerAnimationController
             case PlayerState.isDead:
                 playerAnimator.SetBool("isWaiting", false);
                 playerAnimator.SetBool("isMoving", false);
+                playerAnimator.SetBool("isDead", true);
                
                 break;
 

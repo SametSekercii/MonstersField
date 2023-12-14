@@ -10,8 +10,10 @@ public abstract class Characters : MonoBehaviour,IDamageable
     
     protected Rigidbody rb;
     protected Animator animator;
-    [SerializeField]private float health;
+    [SerializeField] protected float health;
+    protected float maxHealth;
     public float Health { get { return health; } set { value = health; } }
+
 
 
     public abstract void TakeDamage(float damage);
