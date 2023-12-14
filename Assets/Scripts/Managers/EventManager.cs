@@ -5,7 +5,11 @@ public enum GameEvent
 {
     OnStart,
     OnPlaySound,
-    OnFail
+    OnFail,
+    OnKill,
+    OnCollectCoin,
+    OnTakeDamage
+    
 }
 
 public static class EventManager

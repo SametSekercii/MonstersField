@@ -8,11 +8,23 @@ public class PlayerController : Characters
 {
     public enum PlayerState { isMoving, isAttacking, isWaiting, isDead }
     public PlayerState state;
+    public float moveSpeed;
     PlayerMovement _playerMovement;
     PlayerAnimationController PlayerAnimationController;
     PlayerInput _playerInput;
-  
- 
+
+    private void OnEnable()
+    {
+        EventManager.AddHandler(GameEvent.OnTakeDamage, OnTakeDamage);
+        
+    }
+
+    private void OnDisable()
+    {
+        EventManager.RemoveHandler(GameEvent.OnTakeDamage, OnTakeDamage);
+
+    }
+
 
     void Start()
     {
@@ -54,6 +66,23 @@ public class PlayerController : Characters
 
         }
         else state=PlayerState.isDead;
+    }
+
+    public override void TakeDamage(float damage)
+    {
+        if (isAlive) 
+        {
+            Health -= damage;
+        
+        }
+        if (Health <= 0) isAlive = false;
+        EventManager.Broadcast(GameEvent.OnTakeDamage);
+        
+    }
+
+    private void OnTakeDamage()
+    {
+
     }
 
 }
